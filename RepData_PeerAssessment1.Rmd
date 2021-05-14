@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## RepData_PeerAssignment on knitr 
-
+======================================
 
 This first chunk of code is simply a function to download the dataset for the
 assignment, store it in a temporary file, unzip and read it into the variable 
