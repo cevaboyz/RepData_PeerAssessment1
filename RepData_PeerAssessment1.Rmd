@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## RepData_PeerAssignment on knitr 
 
+
 This first chunk of code is simply a function to download the dataset for the
 assignment, store it in a temporary file, unzip and read it into the variable 
 data, then it proceeds to delete the temporary vector containing the file
@@ -27,5 +28,18 @@ data <- read.csv(unz(temp, "activity.csv"))
 unlink(temp)
 
 ```
+
+The second chunk of code is going to transform and tidy up the dataset for the 
+next steps:
+
+1. Transform the date column from character class to date class with the package
+lubridate and the function ymd()
+
+
+```{r}
+
+require(lubridate)
+
+data$date <- ymd(data$date)
 
 
