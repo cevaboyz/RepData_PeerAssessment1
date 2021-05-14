@@ -1,0 +1,31 @@
+---
+title: "RepData_PeerAssignment"
+author: "Andrea Castagna"
+date: "5/14/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## RepData_PeerAssignment on knitr 
+
+This first chunk of code is simply a function to download the dataset for the
+assignment, store it in a temporary file, unzip and read it into the variable 
+data, then it proceeds to delete the temporary vector containing the file
+
+
+```{r}
+
+temp <- tempfile()
+
+download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip", temp)
+
+data <- read.csv(unz(temp, "activity.csv"))
+
+unlink(temp)
+
+```
+
+
