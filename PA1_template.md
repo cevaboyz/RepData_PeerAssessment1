@@ -6,9 +6,7 @@ output: html_document
 keep_md: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 ## RepData_PeerAssignment on knitr 
 ======================================
@@ -18,8 +16,8 @@ assignment, store it in a temporary file, unzip it and read it into the variable
 data, then it proceeds to delete the temporary vector containing the file.
 
 
-```{r}
 
+```r
 temp <- tempfile()
 
 download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip", temp)
@@ -27,7 +25,6 @@ download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.z
 data <- read.csv(unz(temp, "activity.csv"))
 
 unlink(temp)
-
 ```
 
 
@@ -52,8 +49,8 @@ aggregate days and the sum of the steps for each day (NAs were ignored as told);
 each day. 
 
 
-```{r}
 
+```r
 require(lubridate)
 
 data$date <- ymd(data$date)
@@ -72,7 +69,11 @@ hist(agg$x,
       ylab="Count", 
       main="Histogram of total number of steps taken each day",
       col=28)
+```
 
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+
+```r
 ## Mean and Median of the steps
 
 Mean <- mean(agg$x, na.rm = TRUE)
@@ -80,9 +81,18 @@ Mean <- mean(agg$x, na.rm = TRUE)
 Median <- median(agg$x, na.rm = TRUE)
 
 print(Mean)
+```
 
+```
+## [1] 10766.19
+```
+
+```r
 print(Median)
+```
 
+```
+## [1] 10765
 ```
 
 
@@ -97,8 +107,8 @@ vector *max_steps_row* which finds the logical position of the row with the max
 amount of steps and then it applies it as indexing element for the data set.
 
 
-```{r}
 
+```r
 step <- aggregate(steps ~ interval, data, mean)
 
 plot(step$interval, step$steps, type = "l", main = "Average steps taken during 5 minute interval", xlab = "Interval", ylab = "Average number of steps")
@@ -106,13 +116,21 @@ plot(step$interval, step$steps, type = "l", main = "Average steps taken during 5
 abline(h = mean(step$steps), col = "red", lwd = 1, lty = 1)
 
 text(13.08599,48.46744, "Mean", col= "red" )
+```
 
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
+
+```r
 # Find the row with the most steps 
 
 max_steps_row <- which.max(step$steps)
 
 step[max_steps_row, ]
+```
 
+```
+##     interval    steps
+## 104      835 206.1698
 ```
 
 
@@ -131,12 +149,18 @@ The next step is the filling of we are making a copy of our starting data frame:
 3. We will then use the *aggregate* function on the new data frame to make an aggregated data frame and make an histogram of the *steps*;
 
 4. We will then proceed to computate and confront the mean and median of the first data frame with NAs and the *filleroni* data frame with NAs replaced by the average value of the steps for the given interval
-```{r}
 
+```r
 #How many NAs in the data frame
 
 sum(is.na(data$steps))
+```
 
+```
+## [1] 2304
+```
+
+```r
 filleroni <- data
 
 for (i in 1:nrow(filleroni)) 
@@ -160,9 +184,11 @@ filleronidf <- aggregate(steps ~ date, filleroni, sum)
 
 hist(filleronidf$steps, main="Histogram of total number of steps per day with filled NAs", 
      xlab="Total number of steps in a day", col = "green")
+```
 
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
 
-
+```r
 Mean_Filled <- mean(filleronidf$steps)
 
 Median_Filled <- median(filleronidf$steps)
@@ -175,16 +201,34 @@ Median <- median(agg$x, na.rm = TRUE)
 
 
 print(Mean_Filled) 
+```
 
+```
+## [1] 10766.19
+```
+
+```r
 print(Mean)
+```
 
+```
+## [1] 10766.19
+```
 
+```r
 print(Median_Filled) 
+```
 
+```
+## [1] 10766.19
+```
+
+```r
 print(Median)
+```
 
-
-
+```
+## [1] 10765
 ```
 
 
@@ -215,9 +259,8 @@ We then use the aggregate function to aggregate steps and intervals from the two
 
 With the new *agg1* and *agg22* containing our desired data we can now make a plot for each of those cluster, utilizing the base R plot functions we make the two aforementioned plots with the average steps taken on weekdays and weekends.
 
-```{r}
 
-
+```r
 data$day <- weekdays.Date(data$date)
 
 suppressWarnings(weekdays <- subset(data, data$day == c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")))
@@ -236,6 +279,6 @@ par(mfrow=c(2,1))
 plot(agg1, type ="l", xlab="Interval", ylab="Number of Steps (Average)" , main="Average steps taken on Weekdays")
 
 plot(agg22, type ="l", xlab="Interval", ylab="Number of Steps (Average)" , main="Average steps taken on Weekends")
-
-
 ```
+
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
