@@ -86,6 +86,19 @@ print(Median)
 
 ### What is the average daily activity pattern?
 
+1. In order to answer this question we need to use the function *aggregate* to 
+group each of 5 minute interval across all of the days of detection with the
+total mean of steps taken inside the same 5 minute interval
 
+```{r}
 
+step <- aggregate(steps ~ interval, data, mean)
+
+plot(step$interval, step$steps, type = "l", main = "Average steps taken during 5 minute interval", xlab = "Interval", ylab = "Average number of steps")
+
+abline(h = mean(step$steps), col = "red", lwd = 1, lty = 1)
+
+text(13.08599,48.46744, "Mean", col= "red" )
+
+```
 
