@@ -12,9 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## RepData_PeerAssignment on knitr 
 ======================================
 
-This first chunk of code is simply a function to download the dataset for the
-assignment, store it in a temporary file, unzip and read it into the variable 
-data, then it proceeds to delete the temporary vector containing the file
+This first chunk of code is simply a function to download the data set for the
+assignment, store it in a temporary file, unzip it and read it into the variable 
+data, then it proceeds to delete the temporary vector containing the file.
 
 
 ```{r}
@@ -29,11 +29,25 @@ unlink(temp)
 
 ```
 
-The second chunk of code is going to transform and tidy up the dataset for the 
+
+### What is mean total number of steps taken per day?
+
+The second chunk of code is going to transform and tidy up the data set for the 
 next steps:
 
 1. Transform the date column from character class to date class with the package
-lubridate and the function ymd()
+lubridate and the function ymd(), we also add a column Date in the data frame 
+that will be populate by the same dates but transformed with another function:
+as.Date;
+
+2. We then proceed to aggregate our steps data with the function aggregate, with 
+that we can make a new  data frame  *agg* which is going to have 2 columns: the 
+aggregate days and the sum of the steps for each day (NAs were ignored as told);
+
+3. We make an histogram of the total number of steps taken each day;
+
+4. We can then calculate the mean and the median total number of steps taken 
+each day. 
 
 
 ```{r}
@@ -41,5 +55,37 @@ lubridate and the function ymd()
 require(lubridate)
 
 data$date <- ymd(data$date)
+
+data$Date <- as.Date(data$date)
+
+agg <- aggregate(data$steps, by=list(data$Date), sum)
+
+
+## Plot
+
+require(ggplot2)
+
+hist(agg$x, 
+      xlab="Total number of steps taken each day", 
+      ylab="Count", 
+      main="Histogram of total number of steps taken each day",
+      col=28)
+
+## Mean and Median of the steps
+
+Mean <- mean(agg$x, na.rm = TRUE)
+
+Median <- median(agg$x, na.rm = TRUE)
+
+print(Mean)
+
+print(Median)
+
+```
+
+
+### What is the average daily activity pattern?
+
+
 
 
